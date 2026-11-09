@@ -1,0 +1,2331 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>阿犬的資料庫｜柯向恩 互動個人作品集 KEN DATABASE</title>
+    <style>
+        :root {
+            --g: #173c32;
+            --g2: #28594b;
+            --g3: #377261;
+            --c: #f3ead6;
+            --p: #fbf6e9;
+            --ink: #292925;
+            --o: #d8892f;
+            --r: #9b4d38;
+            --line: #b7a98d;
+            --shadow: 0 12px 30px rgba(30, 35, 25, .12);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: repeating-linear-gradient(0deg, rgba(40, 35, 20, .028) 0 1px, transparent 1px 4px), var(--c);
+            color: var(--ink);
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.8;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .14;
+            background-image: radial-gradient(#554d3e .5px, transparent .6px);
+            background-size: 8px 8px;
+            z-index: 99;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font: inherit
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block
+        }
+
+        /* Header */
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: var(--g);
+            color: var(--c);
+            border-bottom: 4px solid var(--o);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .15);
+        }
+
+        .status {
+            cursor: pointer;
+            font: 700 .75rem monospace;
+            background: rgba(255, 255, 255, .1);
+            padding: 4px 10px;
+            border-radius: 3px;
+            border: 1px dashed var(--o);
+            transition: .2s;
+        }
+
+        .status:hover {
+            background: var(--o);
+            color: var(--ink)
+        }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            max-width: 1450px;
+            margin: auto
+        }
+
+        .nav {
+            position: sticky;
+            top: 54px;
+            height: calc(100vh - 54px);
+            padding: 30px 18px;
+            background: #eee3cb;
+            border-right: 1px dashed var(--line);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav small {
+            color: var(--r);
+            font: 700 .75rem monospace;
+            letter-spacing: .15em;
+            display: block;
+            margin-bottom: 8px
+        }
+
+        .links {
+            margin-top: 10px
+        }
+
+        .links a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-left: 3px solid transparent;
+            font-family: monospace;
+            font-size: .9rem;
+            transition: .15s;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .links a:hover,
+        .links a.active {
+            background: #dfcfb0;
+            border-left-color: var(--o);
+            transform: translateX(4px);
+            font-weight: 700;
+            color: var(--g);
+        }
+
+        /* Main & Paper */
+        .main {
+            padding: 40px clamp(18px, 4vw, 65px) 80px;
+            min-width: 0
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block;
+            animation: pageIn .4s ease
+        }
+
+        @keyframes pageIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .paper {
+            background: var(--p);
+            border: 1px solid #d0c3a8;
+            box-shadow: var(--shadow);
+            padding: clamp(22px, 3.5vw, 45px);
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .paper:before {
+            content: "";
+            position: absolute;
+            top: -9px;
+            left: 28px;
+            width: 75px;
+            height: 18px;
+            background: #d8892f66;
+            transform: rotate(-2deg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+        }
+
+        .paper.tape-right:before {
+            left: auto;
+            right: 28px;
+            transform: rotate(2deg)
+        }
+
+        .eyebrow {
+            font: 700 .75rem monospace;
+            letter-spacing: .16em;
+            color: var(--r);
+            text-transform: uppercase
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: "Noto Serif TC", "PMingLiU", serif;
+            color: var(--g);
+            line-height: 1.3
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 4.5rem);
+            margin: .2em 0 .4em
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+            margin: .3em 0
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin: .2em 0
+        }
+
+        .lead {
+            font-size: 1.1rem;
+            color: #3d3a33
+        }
+
+        .hand {
+            font-family: "Comic Sans MS", "Noto Sans TC", cursive;
+            color: var(--r);
+            display: inline-block;
+            transform: rotate(-1.5deg)
+        }
+
+        .stamp {
+            display: inline-block;
+            border: 2.5px solid var(--r);
+            color: var(--r);
+            padding: 3px 10px;
+            font: 900 .72rem monospace;
+            letter-spacing: .08em;
+            transform: rotate(-4deg);
+            margin: 6px 4px;
+            border-radius: 2px;
+        }
+
+        .stamp.green {
+            border-color: var(--g);
+            color: var(--g);
+            transform: rotate(3deg)
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--g);
+            color: var(--c);
+            padding: 3px 8px;
+            font: 700 .7rem monospace;
+            margin: 2px;
+            border-radius: 2px
+        }
+
+        .tag.alt {
+            background: #d5c5a5;
+            color: var(--ink)
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--g);
+            color: var(--c);
+            border: 0;
+            padding: 10px 18px;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 var(--o);
+            transition: .15s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--o)
+        }
+
+        .btn.alt {
+            background: transparent;
+            color: var(--g);
+            border: 2px solid var(--g);
+            box-shadow: none
+        }
+
+        .btn.alt:hover {
+            background: var(--g);
+            color: var(--c)
+        }
+
+        .btn.sm {
+            padding: 6px 12px;
+            font-size: .82rem;
+            box-shadow: 3px 3px 0 var(--o)
+        }
+
+        /* Grids */
+        .grid2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px
+        }
+
+        .grid4 {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px
+        }
+
+        /* Cards */
+        .card {
+            background: #f7efdf;
+            border: 1px solid var(--line);
+            padding: 20px;
+            position: relative;
+            transition: .25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(40, 35, 25, .12);
+            border-color: var(--o)
+        }
+
+        .num {
+            font: 700 .75rem monospace;
+            color: var(--r);
+            margin-bottom: 6px
+        }
+
+        /* Profile Section */
+        .profile {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 28px;
+            align-items: start
+        }
+
+        .profile-frame {
+            background: #fbf7ef;
+            border: 1px solid var(--line);
+            padding: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+            position: relative;
+            transform: rotate(-1deg);
+        }
+
+        .profile-frame:before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 16px;
+            background: rgba(216, 137, 47, .45);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            object-position: center top;
+            border: 1px solid #c9bda5;
+            background: #f3ead6;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .profile-img:hover {
+            filter: contrast(1.05)
+        }
+
+        .profile-caption {
+            margin-top: 10px;
+            text-align: center;
+            font-family: monospace;
+            font-size: .8rem;
+            color: #6b6251;
+        }
+
+        .table {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            border-top: 1px solid var(--line)
+        }
+
+        .table div {
+            padding: 9px 12px;
+            border-bottom: 1px dashed var(--line);
+            font-size: .95rem
+        }
+
+        .label {
+            font-weight: 700;
+            color: var(--g);
+            background: #eee4cf
+        }
+
+        .note {
+            background: #f1dfb9;
+            border-left: 5px solid var(--o);
+            padding: 14px 18px;
+            margin: 18px 0;
+            font-size: .95rem
+        }
+
+        /* Skills Flip Card */
+        .skill {
+            min-height: 180px;
+            perspective: 900px;
+            cursor: pointer
+        }
+
+        .skill-inner {
+            height: 100%;
+            min-height: 180px;
+            position: relative;
+            transition: .5s;
+            transform-style: preserve-3d
+        }
+
+        .skill.flip .skill-inner {
+            transform: rotateY(180deg)
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            inset: 0;
+            padding: 20px;
+            backface-visibility: hidden;
+            background: #f7efdf;
+            border: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            background: #e9ddc4
+        }
+
+        /* Mini Game */
+        .zone {
+            min-height: 120px;
+            border: 2px dashed var(--line);
+            background: #f8f2e2;
+            padding: 14px;
+            transition: .2s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .zone.over {
+            border-color: var(--o);
+            background: #f2e6cb
+        }
+
+        .zone-title {
+            font: 700 .85rem monospace;
+            color: var(--g);
+            border-bottom: 1px dashed var(--line);
+            padding-bottom: 4px
+        }
+
+        .sort-item {
+            background: var(--p);
+            border: 1px solid var(--line);
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: .85rem;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, .06);
+            transition: .15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sort-item:hover {
+            background: #fff;
+            border-color: var(--o);
+            transform: translateX(3px)
+        }
+
+        .sort-item.placed {
+            background: #e7dec5;
+            opacity: .8;
+            cursor: default
+        }
+
+        /* Works Filter & Card */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px
+        }
+
+        .filter-btn {
+            background: var(--p);
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            font: 700 .8rem monospace;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--g);
+            color: var(--c);
+            border-color: var(--g)
+        }
+
+        .work-card {
+            background: #f7efdf;
+            border: 1px solid var(--line);
+            position: relative;
+            transition: .25s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(35, 30, 20, .14);
+            border-color: var(--o)
+        }
+
+        .work-thumb-wrap {
+            height: 190px;
+            overflow: hidden;
+            background: #2a2f2b;
+            position: relative;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+        }
+
+        .work-pdf-cover {
+            height: 190px;
+            background: linear-gradient(135deg, #1b382f 0%, #0e201b 100%);
+            color: var(--c);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 18px;
+            position: relative;
+            cursor: pointer;
+            border-bottom: 1px solid var(--line);
+            transition: .3s ease;
+        }
+
+        .work-card:hover .work-pdf-cover {
+            background: linear-gradient(135deg, #254d41 0%, #152f26 100%);
+        }
+
+        .work-pdf-cover .pdf-icon {
+            font-size: 2.2rem;
+            line-height: 1;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .3));
+        }
+
+        .work-pdf-cover .pdf-tag {
+            font: 700 .68rem monospace;
+            letter-spacing: .12em;
+            color: var(--o);
+            margin-bottom: 4px;
+        }
+
+        .work-pdf-cover .pdf-title {
+            font-family: "Noto Serif TC", "PMingLiU", serif;
+            font-size: .95rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.35;
+            max-width: 220px;
+        }
+
+        .work-pdf-cover .pdf-action {
+            margin-top: 8px;
+            font: 700 .72rem monospace;
+            background: rgba(255, 255, 255, .15);
+            padding: 3px 8px;
+            border-radius: 2px;
+            color: var(--c);
+        }
+
+        .work-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .35s ease;
+        }
+
+        .work-card:hover .work-thumb {
+            transform: scale(1.05);
+            filter: brightness(1.05)
+        }
+
+        .work-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(23, 60, 50, .85);
+            color: var(--c);
+            padding: 2px 8px;
+            font: 700 .7rem monospace;
+            backdrop-filter: blur(3px);
+        }
+
+        .work-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1
+        }
+
+        .work-meta {
+            margin-top: auto;
+            padding-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative
+        }
+
+        .timeline:before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            border-left: 3px dashed var(--g)
+        }
+
+        .event {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 26px
+        }
+
+        .dot {
+            position: absolute;
+            left: 8px;
+            top: 14px;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background: var(--o);
+            border: 4px solid var(--g)
+        }
+
+        /* Media Screening & Sound Lab */
+        .media-theater {
+            background: #202824;
+            color: var(--c);
+            border: 2px solid var(--g);
+            padding: 22px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, .5);
+        }
+
+        .video-frame {
+            width: 100%;
+            background: #0a0d0b;
+            border: 1px solid #3c4c44;
+            border-radius: 3px;
+            overflow: hidden
+        }
+
+        .video-frame video {
+            width: 100%;
+            max-height: 480px;
+            display: block;
+            outline: none
+        }
+
+        .clip-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 16px
+        }
+
+        .clip-btn {
+            background: #2f3b35;
+            color: var(--c);
+            border: 1px solid #4a5c53;
+            padding: 8px 12px;
+            font: 700 .78rem monospace;
+            cursor: pointer;
+            text-align: left;
+            transition: .15s;
+        }
+
+        .clip-btn:hover,
+        .clip-btn.active {
+            background: var(--o);
+            color: var(--ink);
+            border-color: var(--o)
+        }
+
+        .audio-rack {
+            background: #eee3cb;
+            border: 1px solid var(--line);
+            padding: 20px;
+            margin-top: 24px;
+            position: relative;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            margin: 6px 0;
+            background: var(--p);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .track-item:hover,
+        .track-item.playing {
+            background: #fdfaf1;
+            border-color: var(--o);
+            border-left: 5px solid var(--o)
+        }
+
+        .track-btn {
+            background: var(--g);
+            color: var(--c);
+            border: 0;
+            padding: 5px 12px;
+            font: 700 .75rem monospace;
+            cursor: pointer;
+        }
+
+        /* Polaroid & Photo Logs */
+        .polaroid {
+            background: #fff;
+            border: 1px solid #d4c8b0;
+            padding: 12px 12px 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+            position: relative;
+            transition: .25s ease;
+        }
+
+        .polaroid:nth-child(2n) {
+            transform: rotate(1deg)
+        }
+
+        .polaroid:nth-child(2n+1) {
+            transform: rotate(-1deg)
+        }
+
+        .polaroid:hover {
+            transform: translateY(-6px) rotate(0);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, .14);
+            z-index: 2
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: pointer
+        }
+
+        .polaroid-caption {
+            margin-top: 12px;
+            font-family: "Comic Sans MS", "Noto Sans TC", cursive;
+            font-size: .9rem;
+            color: #4c4538;
+            text-align: center;
+        }
+
+        /* Meme Gallery */
+        .meme-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            padding: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .meme-card:hover {
+            transform: scale(1.04);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, .12);
+            border-color: var(--r)
+        }
+
+        .meme-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+            background: #f8f4ec
+        }
+
+        .meme-card span {
+            margin-top: 8px;
+            font: 700 .8rem monospace;
+            color: var(--r)
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #14251dbb;
+            z-index: 100;
+            padding: 4vh 4vw;
+            overflow: auto;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modalbox {
+            max-width: 920px;
+            width: 100%;
+            background: var(--p);
+            padding: clamp(20px, 3.5vw, 40px);
+            border: 2px solid var(--g);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, .5);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            border: 2px solid var(--g);
+            background: transparent;
+            padding: 6px 14px;
+            cursor: pointer;
+            font: 900 1rem monospace;
+            transition: .15s;
+        }
+
+        .close:hover {
+            background: var(--r);
+            color: #fff;
+            border-color: var(--r)
+        }
+
+        /* Lightbox Modal for any image */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 18, 14, .92);
+            z-index: 150;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .lightbox.show {
+            display: flex
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            box-shadow: 0 10px 40px #000
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            color: var(--c);
+            font: 900 1.5rem monospace;
+            cursor: pointer;
+            background: rgba(0, 0, 0, .5);
+            border: 1px solid var(--c);
+            padding: 4px 12px;
+        }
+
+        /* Creature & Toast */
+        .creature {
+            position: fixed;
+            right: 24px;
+            bottom: 20px;
+            width: 80px;
+            height: 65px;
+            z-index: 40;
+            cursor: pointer;
+            animation: peek 5s infinite;
+        }
+
+        .body {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 60px;
+            height: 45px;
+            background: var(--g);
+            border: 3px solid #102d26;
+            border-radius: 45% 55% 45% 50%
+        }
+
+        .eye {
+            position: absolute;
+            top: 21px;
+            width: 9px;
+            height: 12px;
+            background: var(--c);
+            border-radius: 50%;
+            z-index: 2
+        }
+
+        .eye:after {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 4px;
+            height: 7px;
+            background: #222;
+            border-radius: 50%
+        }
+
+        .e1 {
+            left: 27px
+        }
+
+        .e2 {
+            left: 44px
+        }
+
+        .foot {
+            position: absolute;
+            bottom: 4px;
+            width: 17px;
+            height: 10px;
+            background: var(--o);
+            border-radius: 50%;
+            z-index: -1
+        }
+
+        .f1 {
+            left: 18px
+        }
+
+        .f2 {
+            left: 48px
+        }
+
+        @keyframes peek {
+
+            0%,
+            86%,
+            100% {
+                transform: none
+            }
+
+            91% {
+                transform: translateY(-8px) rotate(-4deg)
+            }
+        }
+
+        .bubble {
+            display: none;
+            position: fixed;
+            right: 110px;
+            bottom: 68px;
+            max-width: 280px;
+            background: var(--p);
+            border: 2px solid var(--g);
+            padding: 10px 15px;
+            z-index: 41;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            font-size: .9rem;
+        }
+
+        .bubble.show {
+            display: block
+        }
+
+        .bubble:after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            bottom: 14px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 10px solid var(--g);
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 35px;
+            transform: translate(-50%, 30px);
+            opacity: 0;
+            background: var(--g);
+            color: var(--c);
+            border: 2px solid var(--o);
+            padding: 12px 22px;
+            z-index: 120;
+            transition: .25s ease;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0)
+        }
+
+        /* Loading */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: var(--g);
+            color: var(--c);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loading.hide {
+            animation: fade .5s forwards
+        }
+
+        @keyframes fade {
+            to {
+                opacity: 0;
+                visibility: hidden
+            }
+        }
+
+        .loadbar {
+            width: 260px;
+            height: 12px;
+            border: 2px solid var(--c);
+            margin: 15px
+        }
+
+        .loadbar span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--o);
+            animation: load 1.2s forwards
+        }
+
+        @keyframes load {
+            to {
+                width: 100%
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 45px 20px;
+            color: #716958;
+            font: 700 .75rem monospace;
+            border-top: 1px dashed var(--line);
+            background: #ede0c7
+        }
+
+        @media(max-width:980px) {
+            .layout {
+                display: block
+            }
+
+            .nav {
+                position: relative;
+                top: 0;
+                height: auto;
+                border-right: 0;
+                border-bottom: 1px dashed var(--line);
+                padding: 14px
+            }
+
+            .links {
+                display: flex;
+                overflow-x: auto;
+                gap: 6px;
+                padding-bottom: 6px
+            }
+
+            .links a {
+                white-space: nowrap
+            }
+
+            .main {
+                padding: 26px 16px
+            }
+
+            .profile,
+            .grid2,
+            .grid3,
+            .grid4 {
+                grid-template-columns: 1fr
+            }
+
+            .table {
+                grid-template-columns: 110px 1fr
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading" id="loading">
+        <div class="eyebrow" style="color:var(--o)">KEN CREATIVE ARCHIVE SYSTEM</div>
+        <h2 style="color:var(--c)">阿犬的資料庫</h2>
+        <div style="font-family:monospace;font-size:.85rem">LOADING PERSONAL MEDIA & WORKS...</div>
+        <div class="loadbar"><span></span></div>
+        <div style="font-family:monospace;font-size:.75rem">ACCESS GRANTED / 檔案庫解鎖</div>
+    </div>
+
+    <header class="top">
+        <div>
+            <b>阿犬的資料庫 / KEN DATABASE</b>
+            <span style="font-family:monospace;font-size:.75rem;opacity:.75;margin-left:8px">v2.4_archive</span>
+        </div>
+        <span class="status" id="status" title="點擊切換狀態記錄">ARCHIVE STATUS: OPEN</span>
+    </header>
+
+    <div class="layout">
+        <aside class="nav">
+            <small>FILE INDEX / 檔案目錄</small>
+            <div class="links">
+                <a href="#home"><span>00　HOME</span><small>首頁</small></a>
+                <a href="#about"><span>01　ABOUT</span><small>認識阿犬</small></a>
+                <a href="#skills"><span>02　SKILLS</span><small>技能與分類</small></a>
+                <a href="#works"><span>03　WORKS</span><small>精選作品</small></a>
+                <a href="#media"><span>04　MEDIA LAB</span><small>動態放映室</small></a>
+                <a href="#journey"><span>05　JOURNEY</span><small>學習旅程</small></a>
+                <a href="#character"><span>06　CHARACTER</span><small>角色與迷因</small></a>
+                <a href="#campus"><span>07　CAMPUS</span><small>校園紀實</small></a>
+                <a href="#next"><span>08　NEXT</span><small>待辦清單</small></a>
+                <a href="#secret" style="color:var(--r)"><span>???　SECRET</span><small>機密抽屜</small></a>
+            </div>
+            <div style="margin-top:auto;padding-top:20px">
+                <p class="hand">「請隨意抽閱檔案。<br>小怪獸保證不咬人。」</p>
+            </div>
+        </aside>
+
+        <main class="main">
+
+            <!-- 00 HOME -->
+            <section id="home" class="page active">
+                <div class="paper">
+                    <div class="eyebrow">FILE NO. KEN-0001 / PERSONAL CREATIVE DATABASE</div>
+                    <h1>阿犬的資料庫</h1>
+                    <p class="lead">
+                        你好！我是阿犬（柯向恩）。<br>
+                        目前就讀於<strong>台南應用科技大學 多媒體動畫系</strong>。<br>
+                        是個腦袋裡裝著奇特想法、熱愛動手實作的創作者（？）。很高興認識你！
+                    </p>
+                    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+                        <a class="btn" href="#works">▣ 抽查精選作品</a>
+                        <a class="btn alt" href="#media">▶ 進入放映與試聽室</a>
+                        <span class="stamp">已確認存檔</span>
+                        <span class="tag">多媒體動畫</span>
+                        <span class="tag">手作工藝</span>
+                        <span class="tag">怪獸觀察員</span>
+                    </div>
+                </div>
+
+                <div class="paper tape-right">
+                    <div class="eyebrow">SYSTEM OVERVIEW</div>
+                    <h2>歡迎調查本檔案庫。</h2>
+                    <p>
+                        本資料庫收錄多媒體動畫系學生的個人創作歷程：包含<strong>動畫概念分鏡、原創劇本、皮革手作、像素互動遊戲、Blender 3D
+                            建模、影展海報主視覺、奇幻角色插畫、逐格形變動畫</strong>，以及現場動態影音與活動側拍。
+                    </p>
+                    <div class="grid3" style="margin-top:20px">
+                        <div class="card" onclick="location.hash='#works'" style="cursor:pointer">
+                            <div class="num">ARCHIVE 01</div>
+                            <h3>實體作品庫</h3>
+                            <p>12 份精選創作檔案，包含分鏡、插畫、皮革與遊戲截圖。</p>
+                            <span class="tag">VIEW WORKS</span>
+                        </div>
+                        <div class="card" onclick="location.hash='#media'" style="cursor:pointer">
+                            <div class="num">ARCHIVE 02</div>
+                            <h3>動態放映室</h3>
+                            <p>5 部學生動畫短片練習與 5 軌聲音設計試聽檔案。</p>
+                            <span class="tag">PLAY MEDIA</span>
+                        </div>
+                        <div class="card" onclick="location.hash='#character'" style="cursor:pointer">
+                            <div class="num">ARCHIVE 03</div>
+                            <h3>角色與精神狀態</h3>
+                            <p>代表角色設定小傳，以及私藏的「我就爛」精神貼圖。</p>
+                            <span class="tag">DOODLE VAULT</span>
+                        </div>
+                    </div>
+                    <div class="note">提示：畫面右下角躲著一隻神秘小生物。點擊牠可以觀察牠的即時心聲。</div>
+                    <button class="btn alt sm" id="fileNo">FILE NO. KEN-0001</button>
+                    <button class="btn alt sm" id="dont">【請勿拍打餵食】</button>
+                </div>
+            </section>
+
+            <!-- 01 ABOUT -->
+            <section id="about" class="page">
+                <div class="paper">
+                    <div class="eyebrow">01 / ABOUT CREATOR</div>
+                    <h1>認識一下我</h1>
+                    <p class="lead">你好，我是柯向恩，也可以叫我阿犬、軍犬或莫玄。</p>
+                    <p>
+                        目前就讀於台南應用科技大學多媒體動畫系。喜歡插畫、2D/3D 動畫、立體手作與互動式創作。平時習慣觀察日常生活中細微而容易被忽略的紋理，也熱衷於嘗試不同的媒材與表現手法。
+                    </p>
+                    <p>
+                        比起單純追求畫面的炫目，我更享受「從零開始把奇怪的想法具現化」的過程。希望未來能持續探索動畫、互動程式與實體手作的交界點，創作出有溫度且讓人會心一笑的作品。
+                    </p>
+                </div>
+
+                <div class="paper">
+                    <div class="profile">
+                        <div class="profile-frame">
+                            <img src="images/1/1.jpg" alt="代表角色立繪：阿犬 (KEN)" class="profile-img"
+                                onclick="openLightbox('images/1/1.jpg','代表角色立繪：阿犬 (KEN) / 莫玄')">
+                            <div class="profile-caption">
+                                <b>FILE SPECIMEN #01</b><br>
+                                代表角色：阿犬 (KEN) / 莫玄<br>
+                                <small>不藍不綠的髮色 / 黃色羊眼 / 尖牙 / 狗勾</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="eyebrow">PERSONAL FILE DOSSIER</div>
+                            <h2>柯向恩 / 阿犬 / 莫玄</h2>
+                            <div class="table">
+                                <div class="label">本名</div>
+                                <div>柯向恩 (KE, XIANG-EN)</div>
+                                <div class="label">暱稱</div>
+                                <div>阿犬 / 軍犬 / 莫玄</div>
+                                <div class="label">學歷身分</div>
+                                <div>台南應用科技大學 多媒體動畫系 </div>
+                                <div class="label">性格特質</div>
+                                <div>細心觀察、友善內向、慢工出細活、偶爾冒出奇思妙想</div>
+                                <div class="label">創作領域</div>
+                                <div>2D 動畫、手作工藝 (皮革/黏土)、角色設計、3D 建模、劇本編寫</div>
+                                <div class="label">喜愛的事</div>
+                                <div>散步觀察周遭、打磨皮革、畫奇怪的小怪獸、翻閱分鏡</div>
+                                <div class="label">代表形象</div>
+                                <div>就是個奇怪的人</div>
+                                <div class="label">未來展望</div>
+                                <div>持續累積原創作品集，跨足互動敘事與多元媒材創作</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">THREE KEYWORDS</div>
+                    <div class="grid3">
+                        <div class="card">
+                            <div class="num">01</div>
+                            <h3>觀察者 OBSERVER</h3>
+                            <p>細緻捕捉生活的光影、材質折痕與人們微妙的情感反應。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">02</div>
+                            <h3>創作者 CREATOR</h3>
+                            <p>不侷限於單一工具，從數位板畫到手縫皮革，享受把想法做出來的觸感。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">03</div>
+                            <h3>實驗者 EXPERIMENTER</h3>
+                            <p>對 3D 渲染、動態排印、互動程式與聲音設計保持無止境的好奇。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 02 SKILLS -->
+            <section id="skills" class="page">
+                <div class="paper">
+                    <div class="eyebrow">02 / SKILLS DATABASE</div>
+                    <h1>我會的事情</h1>
+                    <p>目前持續學習多媒體創作所需的各項工具與技法。點擊卡片可翻閱備註。</p>
+                    <div class="note">這裡故意不放「技能 85%」之類的進度條——創作能力是生動的經驗累積，很難用一根進度條來定義。</div>
+                </div>
+
+                <div class="paper">
+                    <div class="grid2" id="skillsGrid"></div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">INTERACTIVE LAB</div>
+                    <h2>把檔案整理好（分類小挑戰）</h2>
+                    <p>檔案櫃散落了一地！請先點擊上方「待分類檔案」，再點擊對應的「檔案收納盒」完成歸檔：</p>
+
+                    <div style="margin-bottom:12px">
+                        <small class="eyebrow" style="color:var(--g)">待分類檔案清單（點擊選取）：</small>
+                        <div class="grid3" id="sortItems" style="margin-top:8px"></div>
+                    </div>
+
+                    <div class="grid4" id="zoneContainer" style="margin-top:16px">
+                        <div class="zone" data-zone="動畫" onclick="handleZoneClick('動畫')">
+                            <div class="zone-title">【動畫 / 動態】</div>
+                            <div class="zone-content"></div>
+                        </div>
+                        <div class="zone" data-zone="手作" onclick="handleZoneClick('手作')">
+                            <div class="zone-title">【手作 / 工藝】</div>
+                            <div class="zone-content"></div>
+                        </div>
+                        <div class="zone" data-zone="遊戲" onclick="handleZoneClick('遊戲')">
+                            <div class="zone-title">【遊戲 / 3D】</div>
+                            <div class="zone-content"></div>
+                        </div>
+                        <div class="zone" data-zone="劇本" onclick="handleZoneClick('劇本')">
+                            <div class="zone-title">【劇本 / 企劃】</div>
+                            <div class="zone-content"></div>
+                        </div>
+                    </div>
+                    <div id="gameMsg" style="margin-top:14px;font-weight:700;font-family:monospace;color:var(--r)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 03 WORKS -->
+            <section id="works" class="page">
+                <div class="paper">
+                    <div class="eyebrow">03 / WORKS ARCHIVE</div>
+                    <h1>精選作品 WORKS</h1>
+                    <p>收錄在學期間的專案創作、原創概念、課程作業與實體手作工藝。點擊每件作品可調閱完整檔案與高清圖片。</p>
+
+                    <div class="filter-bar">
+                        <button class="filter-btn active" data-filter="all" onclick="filterWorks('all')">全部 ALL
+                            (12)</button>
+                        <button class="filter-btn" data-filter="anim" onclick="filterWorks('anim')">動畫與動態 (3)</button>
+                        <button class="filter-btn" data-filter="illust" onclick="filterWorks('illust')">插畫與平面
+                            (3)</button>
+                        <button class="filter-btn" data-filter="game" onclick="filterWorks('game')">3D 與遊戲企劃
+                            (3)</button>
+                        <button class="filter-btn" data-filter="craft" onclick="filterWorks('craft')">手作與工藝 (2)</button>
+                        <button class="filter-btn" data-filter="story" onclick="filterWorks('story')">劇本與世界觀
+                            (1)</button>
+                    </div>
+                </div>
+
+                <div class="grid3" id="worksGrid"></div>
+            </section>
+
+            <!-- 04 MEDIA LAB -->
+            <section id="media" class="page">
+                <div class="paper">
+                    <div class="eyebrow">04 / MULTIMEDIA LAB</div>
+                    <h1>多媒體動態放映室 & 聲音實驗室</h1>
+                    <p>這裡收錄在學期間製作的動畫作業、動態影像剪輯與聲音設計專案。可直接在瀏覽器內播放體驗！</p>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">SCREENING ROOM / 動態影音放映廳</div>
+                    <h2>動畫專案放映</h2>
+                    <div class="media-theater">
+                        <div class="video-frame">
+                            <video id="mainVideo" controls poster="images/4/w.png">
+                                <source src="images/4/柯向恩D13370449.mp4" type="video/mp4">
+                                您的瀏覽器不支援影片播放。
+                            </video>
+                        </div>
+                        <div
+                            style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                            <div id="videoTitle" style="font-weight:700;font-size:1.1rem;color:var(--o)">
+                                ▶ 專案動畫作業展示 (柯向恩D13370449)
+                            </div>
+                            <div id="videoMeta" style="font-family:monospace;font-size:.8rem;opacity:.8">
+                                格式：MP4 / 課堂動畫作業
+                            </div>
+                        </div>
+                    </div>
+
+                    <small class="eyebrow">點選切換放映片段：</small>
+                    <div class="clip-selector" id="videoClips">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">SOUND DESIGN / 聲音檔案櫃</div>
+                    <h2>配樂與聲音設計試聽</h2>
+                    <p>收錄為專案與課堂作業製作的背景配樂、情境氛圍音效與後製音軌：</p>
+
+                    <div class="audio-rack">
+                        <div
+                            style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:#f3ead6;padding:12px;border:1px solid var(--line)">
+                            <audio id="mainAudio" controls style="flex:1">
+                                <source src="images/4/計畫案1%20.mp3" type="audio/mpeg">
+                                您的瀏覽器不支援音訊播放。
+                            </audio>
+                        </div>
+                        <div id="audioNowPlaying"
+                            style="font-weight:700;font-family:monospace;color:var(--g);margin-bottom:10px">
+                            目前選取：計畫案聲音設計 01
+                        </div>
+                        <div class="track-list" id="audioTracks">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 05 JOURNEY -->
+            <section id="journey" class="page">
+                <div class="paper">
+                    <div class="eyebrow">05 / LEARNING JOURNEY</div>
+                    <h1>我的學習歷程</h1>
+                    <p>從高中養蜂社社長到進入大學多媒體動畫系，每一步都在開拓新的視野。</p>
+                </div>
+
+                <div class="paper">
+                    <div class="timeline" id="timeline"></div>
+                </div>
+
+                <div class="paper">
+                    <span class="stamp">SYSTEM LOG</span>
+                    <p>這個人到底累積了多少奇怪的經驗？</p>
+                    <p class="hand">「據說養蜂培養了耐心，縫皮革培養了手指韌性，做動畫培養了肝。」</p>
+                    <p>目前仍在持續升級中。</p>
+                </div>
+            </section>
+
+            <!-- 06 CHARACTER -->
+            <section id="character" class="page">
+                <div class="paper">
+                    <div class="eyebrow">06 / CREATOR TRAITS</div>
+                    <h1>創作者特質與心路</h1>
+                    <div class="grid2">
+                        <div class="card">
+                            <div class="num">TRAIT 01</div>
+                            <h3>細節觀察與敏銳度</h3>
+                            <p>能留意材質在不同受力下的微小形變（例如鋁箔包被壓扁時的折角走向）。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">TRAIT 02</div>
+                            <h3>動手做工藝的耐心</h3>
+                            <p>願意花費數十小時專注打磨一件皮革或雕刻分鏡，享受親手雕琢的過程。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">TRAIT 03</div>
+                            <h3>不設限的世界觀發想</h3>
+                            <p>不論是愛吃草莓蛋糕的反烏托邦市民，還是開推土機的實習客人，都充滿敘事活力。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">TRAIT 04</div>
+                            <h3>多元軟體實戰探索</h3>
+                            <p>靈活切換 Photoshop、Blender、Clip Studio、HTML/CSS/JS 與聲音後製軟體。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">PROCESS RECORD</div>
+                    <h2>創作與手作實錄</h2>
+                    <p>動態線稿、手作皮革的工藝剪影與實物手感：</p>
+                    <div class="grid2" style="margin-top:16px">
+                        <div class="polaroid" onclick="openLightbox('images/3/p.png','皮革手工製作記錄：證件套、小馬、零錢包、小鳥吊飾')">
+                            <img src="images/3/p.png" alt="皮革工藝實作">
+                            <div class="polaroid-caption">【皮革實作】四件原創手工皮件展示</div>
+                        </div>
+                        <div class="polaroid"
+                            onclick="openLightbox('images/5/sketch1778412131388.jpeg','動作分鏡草稿：雙生持刃決鬥動態線稿')">
+                            <img src="images/5/sketch1778412131388.jpeg" alt="動作分鏡草稿">
+                            <div class="polaroid-caption">【動作線稿】很可愛的兩隻小鳥</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">DOODLE VAULT / 阿犬的精神狀態抽屜</div>
+                    <h2>代表角色塗鴉與迷因貼圖集</h2>
+                    <p>創作遇到瓶頸時，最好的宣洩方式就是畫自己的代表角色發癲。點擊下方貼圖可觸發阿犬的心得語錄：</p>
+
+                    <div class="grid4" style="margin-top:16px">
+                        <div class="meme-card" onclick="triggerMeme('我就爛！','阿犬自信比讚：雖然進度落後，但我態度良好！')">
+                            <img src="images/5/sketch1783615201533.jpeg" alt="我就爛！">
+                            <span>【我就爛！】</span>
+                        </div>
+                        <div class="meme-card" onclick="triggerMeme('看開點','阿犬哲理開導：沒有解決不了的 BUG，只有被刪掉的程式碼。')">
+                            <img src="images/5/sketch1787480601149.jpeg" alt="看開點">
+                            <span>【看開點】</span>
+                        </div>
+                        <div class="meme-card" onclick="triggerMeme('密謀中','阿犬十指緊扣：事情開始朝著不可預測的方向前進了……')">
+                            <img src="images/5/sketch1783608477014.jpeg" alt="密謀中">
+                            <span>【密謀中】</span>
+                        </div>
+                        <div class="meme-card" onclick="triggerMeme('心靈花束','阿犬抱膝沉思：今天也是努力收集美好靈感的一天。')">
+                            <img src="images/5/sketch1783587288628.jpeg" alt="手捧花束的少年">
+                            <span>【心靈花束】</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 07 CAMPUS -->
+            <section id="campus" class="page">
+                <div class="paper">
+                    <div class="eyebrow">07 / CAMPUS RECORD</div>
+                    <h1>校園經歷與實務現場</h1>
+                    <p>在台南應用科技大學多媒體動畫系的日常點滴、活動籌辦與展演參與：</p>
+                    <div class="grid3" id="campusGrid"></div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">PHOTO LOG / 實地紀實影像</div>
+                    <h2>活動與展演實拍紀錄</h2>
+                    <p>點擊照片可放大檢視：</p>
+                    <div class="grid3" style="margin-top:18px">
+                        <div class="polaroid" onclick="openLightbox('images/2/-1.jpg','臺南市社區營造計畫：三崁營隊同儕合影')">
+                            <img src="images/2/-1.jpg" alt="社區營造計畫活動照片">
+                            <div class="polaroid-caption">【社區營造計畫】蛙蛙果成果發表</div>
+                        </div>
+                        <div class="polaroid" onclick="openLightbox('images/2/-2.jpg','系學會活動現場籌備：文書組柯向恩工作人員現場紀錄')">
+                            <img src="images/2/-2.jpg" alt="系學會文書組工作照片">
+                            <div class="polaroid-caption">【系學會文書組】工作人員是聖誕樹</div>
+                        </div>
+                        <div class="polaroid"
+                            onclick="openLightbox('images/2/-3.jpg','多媒體動畫系教室門口 (D301-1 畢業專題工作室) 同學合照')">
+                            <img src="images/2/-3.jpg" alt="多媒體動畫系教室合照">
+                            <div class="polaroid-caption">【系館日常】D301-1 文書夥伴大合照</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 08 NEXT -->
+            <section id="next" class="page">
+                <div class="paper">
+                    <div class="eyebrow">08 / NEXT MILESTONES</div>
+                    <h1>NEXT｜接下來的修煉方向</h1>
+                    <p>這裡收錄一些還在進行中、或即將展開的原創挑戰清單：</p>
+                    <div class="note">完成度：持續推進中。　預計完成時間：靈感成熟時。　是否放棄：絕對不放棄。</div>
+                </div>
+
+                <div class="paper">
+                    <div class="grid2" id="nextGrid"></div>
+                </div>
+            </section>
+
+            <!-- ??? SECRET -->
+            <section id="secret" class="page">
+                <div class="paper">
+                    <div class="eyebrow">??? / SECRET ARCHIVE</div>
+                    <h1>阿犬的無意義機密資料庫</h1>
+                    <p>這裡是一些非正式履歷但極其重要的神秘觀察報告。</p>
+
+                    <div class="grid2">
+                        <div class="card">
+                            <div class="num">SEC-01</div>
+                            <h3>草莓蛋糕行蹤調查</h3>
+                            <p>經過三週的深入探查，草莓蛋糕大概已經被吃掉了。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">SEC-02</div>
+                            <h3>推土機駕駛資格</h3>
+                            <p>目前多媒體動畫系並未開設推土機執照課程，純屬遊戲荒誕劇情。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">SEC-03</div>
+                            <h3>綠茶空盒物理抗性</h3>
+                            <p>生活綠茶 330cc 鋁箔包在受到 45 度角斜向踩踏時，呈現最完美的皺褶動態。</p>
+                        </div>
+                        <div class="card">
+                            <div class="num">SEC-04</div>
+                            <h3>小怪獸的存在主義危機</h3>
+                            <p>右下角的小怪獸堅稱自己是一隻會行光合作用的多邊形土豆。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="eyebrow">HIDDEN MINI GAME</div>
+                    <h2>小怪獸捕獲器</h2>
+                    <p>畫面右下角的綠色小怪獸正在偷偷觀察你。累積戳牠 5 次，將解鎖神秘成就！</p>
+                    <p style="font-size:1.2rem;font-family:monospace">目前捕捉進度：<b id="count" style="color:var(--r)">0</b>
+                        / 5</p>
+                    <div style="display:flex;gap:10px;margin-top:14px">
+                        <button class="btn" onclick="toast('牠就在畫面右下角！用游標狠狠戳牠！')">提供線索</button>
+                        <button class="btn alt" onclick="triggerMeme('隨機迷因','你從機密櫃中抽出一張神秘貼圖！')">抽一張精神狀態貼圖</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Interactive Creature & Bubble -->
+    <div class="creature" id="creature" aria-label="奇怪的小生物" title="點我戳我！">
+        <div class="body"></div>
+        <div class="eye e1"></div>
+        <div class="eye e2"></div>
+        <div class="foot f1"></div>
+        <div class="foot f2"></div>
+    </div>
+    <div class="bubble" id="bubble"></div>
+    <div class="toast" id="toast"></div>
+
+    <!-- Work Modal -->
+    <div class="modal" id="modal">
+        <div class="modalbox">
+            <button class="close" id="close">CLOSE ×</button>
+            <div class="eyebrow" id="modalCategory">DOSSIER VIEW</div>
+            <h2 id="modalTitle" style="margin-top:4px"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+        <img id="lightboxImg" src="" alt="放大預覽">
+    </div>
+
+    <footer>
+        ━━━━━━━━━━━━━━━━━━━━━━━━　ARCHIVE END　━━━━━━━━━━━━━━━━━━━━━━━━<br>
+        柯向恩 (阿犬 / 莫玄) 互動個人作品集資料庫<br>
+        台南應用科技大學 多媒體動畫系　|　學號：D13370449<br>
+        © KEN DATABASE ARCHIVE SYSTEM　/　FILE STATUS : SECURED
+    </footer>
+
+    <script>
+        /* Skills Data */
+        const skillData = [
+            ["美術創作与插畫", "插畫、草圖、原創角色發想", "「只要有一支筆就能畫。」\n「有時候先畫下直覺，再去構築角色的靈魂。」"],
+            ["2D 動畫製作", "關鍵影格、運動規律、逐格形變研究", "「關鍵影格是最好的朋友。」\n「壓扁與拉伸是生命的律動。」"],
+            ["Blender 3D 製作", "基礎建模、環境燈光、場景材質渲染", "「正在持續與布線法線戰鬥。」\n「光影對了，整個小世界就活過來了。」"],
+            ["影像與後製合成", "After Effects、Premiere 剪輯動態", "「時間軸是魔術師的畫布。」\n「將手繪素材與動態元素完美拼合。」"],
+            ["手作與皮革工藝", "皮革剪裁、鞍式雙針縫合、打磨塑型", "「需要絕對的耐心與手感。」\n「每件皮件都帶有指尖打磨的溫度。」"],
+            ["企劃與世界觀構思", "劇本創作、角色小傳、互動故事線", "「奇怪的想法會自己鑽出來。」\n「世界觀要足夠荒謬，才顯得真實。」"],
+            ["網頁與互動程式", "HTML5、CSS3、JavaScript 學習實作", "「網頁就是另一種可以點擊的畫布。」\n「偶爾會寫出有靈魂的小彩蛋。」"],
+            ["團隊行政與活動籌辦", "系學會文書整理、名單管理、活動現場執行", "「整理資料也是一種精密工藝。」\n「在幕後確保每個細節順暢運轉。」"]
+        ];
+
+        /* 12 Works Data with Real Images */
+        const works = [
+            {
+                id: "01",
+                title: "Carved Away (削刻自我)",
+                cat: "概念動畫",
+                filter: "anim",
+                thumb: "images/3/ca.png",
+                gallery: ["images/3/ca.png"],
+                tags: "概念動畫 / 故事分鏡 / 角色雕刻",
+                tools: "Clip Studio Paint / Photoshop",
+                desc: "一個關於自我雕刻與追尋理想形體的故事。木製人物在荒原中拾起雕刻刀，透過不斷削去自身的木質軀體，在形變與疼痛中尋求精神上的完全與自我認同。作品包含完整四格情境與分鏡表格規劃。",
+                note: "「每削掉一刀，是變得更完美，還是失去了原本的自己？」"
+            },
+            {
+                id: "02",
+                title: "當邏輯燃燒時，我們談論草莓蛋糕",
+                cat: "原創劇本",
+                filter: "story",
+                pdf: "images/6/《當邏輯燃燒時，我們談論草莓蛋糕》20260622.pdf",
+                pdfName: "《當邏輯燃燒時，我們談論草莓蛋糕》20260622.pdf",
+                thumb: "images/6/《當邏輯燃燒時，我們談論草莓蛋糕》20260622.pdf",
+                gallery: [],
+                tags: "原創世界觀 / 舞台劇本 / 反烏托邦 / PDF文本",
+                tools: "劇本撰寫 / 原創手稿 / PDF 電子文本",
+                desc: "以情緒受到嚴格控制、依循絕對邏輯運作的未來世界為背景，描寫主角在機械般的生活中意外邂逅了一塊象徵「不完美情感」的草莓蛋糕。在規則與衝動之間展開荒謬而深刻的人性衝突。",
+                note: "「在絕對理性的世界裡，一口草莓蛋糕就是叛逆的起點。」"
+            },
+            {
+                id: "03",
+                title: "皮革工藝與立體手作集",
+                cat: "工藝創作",
+                filter: "craft",
+                thumb: "images/3/p.png",
+                gallery: ["images/3/p.png"],
+                tags: "皮革工藝 / 鞍式手縫 / 立體塑型",
+                tools: "植鞣皮革 / 蠟線 / 菱斬 / 手工封邊",
+                desc: "大學期間手工皮革作品精選：收錄【1. 尖牙怪獸證件套】、【2. 多層拼接小馬吊飾】、【3. 雙色縫線四合扣零錢包】以及【4. 期末原創立體小鳥吊飾】。親手經歷皮革裁切、打孔、手工雙針縫合與邊緣打磨處理。",
+                note: "「手縫皮革需要的是心靜，每一針的間距都是手感累積。」"
+            },
+            {
+                id: "04",
+                title: "Teto 麵包店實習 (BAKERY 3 DAYS)",
+                cat: "互動遊戲",
+                filter: "game",
+                thumb: "images/3/teto.png",
+                gallery: ["images/3/teto.png"],
+                tags: "像素美術 / 互動遊戲 / 荒謬幽默",
+                tools: "HTML5 / CSS / JavaScript / Aseprite",
+                desc: "以人氣虛擬角色重音 Teto 與麵包店為主題的復古像素冒險小遊戲。玩家扮演新人店員在 3 天的實習輪班中應對怪異客人與突發事件——例如開著推土機想要把地板推平的客人、神秘手機與亂飛的長棍麵包。",
+                note: "「推土機客人：『我不是來拆店的，我只是想把地板推平。』」https://d13370449-ui.github.io/tetoB/"
+            },
+            {
+                id: "05",
+                title: "Pixel Focus Planet 像素專注星球",
+                cat: "遊戲企劃",
+                filter: "game",
+                thumb: "images/3/pf.jpg",
+                gallery: ["images/3/pf.jpg"],
+                tags: "遊戲企劃 / 專注計時 / 像素養成",
+                tools: "Photoshop / 遊戲企劃書 / UI概念",
+                desc: "將專注工作法（番茄鐘）與像素生態養成結合的 App 概念企劃。使用者專注的時間將轉化為星球培育能量，逐步點亮屬於自己的像素微型行星，並收集造型奇異的宇宙生物與植物。",
+                note: "「給認真專注的人一顆會發光的像素小星球。」"
+            },
+            {
+                id: "06",
+                title: "流動的邊界 Flowing Boundaries",
+                cat: "海報設計",
+                filter: "illust",
+                thumb: "images/4/w.png",
+                gallery: ["images/4/w.png"],
+                tags: "影展主視覺 / 平面設計 / 數位繪畫",
+                tools: "Photoshop / 數位繪圖板 / 排版",
+                desc: "為課上練習設計的主視覺海報。以『像素與筆觸之間，定義真實』為主題，結合璀璨落日山景與夜空像素星河，呈現傳統手繪與數位虛構的流動界線。",
+                note: "「在流動的邊界上，我們既是旅人，也是造夢者。」"
+            },
+            {
+                id: "07",
+                title: "Ripple Splash 漣漪水花",
+                cat: "數位插畫",
+                filter: "illust",
+                thumb: "images/4/KE,XIANG-EN_%20ripple%20splash_Taiwan.jpg",
+                gallery: ["images/4/KE,XIANG-EN_%20ripple%20splash_Taiwan.jpg"],
+                tags: "原創插畫 / 色彩研究 / 水下奇幻",
+                tools: "Clip Studio Paint / 數位繪圖板",
+                desc: "以水下折射光影與奇幻生態為題的原創插畫作品。粉紫髮色的少年在深邃水域中與散發光芒的虛幻飛魚指尖相觸，周圍環繞著晶瑩水泡與隱匿水生靈，運用大膽高飽和配色演繹奇幻氛圍。",
+                note: "「在寧靜的水波深處，每次游動都是一道絢麗的光斑。」"
+            },
+            {
+                id: "08",
+                title: "《煉銅術師》動態字體排印",
+                cat: "文字排印",
+                filter: "anim",
+                thumb: "images/4/6.jpg",
+                gallery: ["images/4/6.jpg"],
+                tags: "Motion Typography / 標準字設計 / 垂直排版",
+                tools: "Photoshop / Illustrator / After Effects 預想",
+                desc: "視覺傳達與動態字體排印課程作業。以直式標題版型（Vertical Title Layout 01）為核心，探索不同字體結構、幾何符號襯線與版面節奏安排。",
+                note: "「文字不只是閱讀載體，也是具有視覺重量與運動傾向的幾何形體。」"
+            },
+            {
+                id: "09",
+                title: "夜幕石造旅棧與夜行客",
+                cat: "3D 建模",
+                filter: "game",
+                thumb: "images/4/3d1.png",
+                gallery: ["images/4/3d1.png"],
+                tags: "Blender 3D / 場景建模 / 燈光渲染",
+                tools: "Blender 3D / Cycles 渲染引擎",
+                desc: "使用 Blender 製作的奇幻夜景場景。以粗獷的石砌牆面、木質百葉窗扇與暖黃夜燈營造溫暖又略帶孤寂的山丘客棧；門前石階上佇立著大眼睛的逗趣小生物正在暗夜中好奇張望。",
+                note: "「在 3D 的世界裡拉出第一道溫暖的燈光，旅人就有了歸宿。」"
+            },
+            {
+                id: "10",
+                title: "超現實材質拼貼藝術 (Collage Study)",
+                cat: "複合媒材",
+                filter: "craft",
+                thumb: "images/4/pt2.jpg",
+                gallery: ["images/4/pt2.jpg", "images/4/pt1.jpg"],
+                tags: "紙雕拼貼 / 紋理採集 / 複合媒材",
+                tools: "雜誌剪貼 / 織物布料 / 實體拼貼",
+                desc: "複合媒材拼貼藝術創作系列。採集織物毛線紋理、自然葉脈、人體身軀與紙片切塊進行超現實解構重組，打破常規的人體輪廓，呈現出極具戲劇張力與神秘感的律動形態。",
+                note: "「將不同質地的碎片撕開再拼合，會拼湊出意料之外的靈魂。」"
+            },
+            {
+                id: "11",
+                title: "奇幻生靈與異界角色概念設定集",
+                cat: "角色設計",
+                filter: "illust",
+                thumb: "images/4/sketch1780299055918.jpeg",
+                gallery: [
+                    "images/4/sketch1780299055918.jpeg",
+                    "images/4/003.png",
+                    "images/4/004.png",
+                    "images/4/001.png",
+                    "images/4/002.png",
+                    "images/5/未命名的作品.jpg"
+                ],
+                tags: "角色設定 / 奇幻生物 / 造型演練",
+                tools: "Clip Studio Paint / 手繪草稿",
+                desc: "長期累積的原創生物與怪獸造型庫：包含奇幻三獸（白犬、鷹頭鳥人、天蠶蛾獸）、埃及胡狼神風靈獸（金飾藍身）、雙角靈貓與半人馬鹿角林地巨獸。記錄了從粗糙動態塗鴉到細緻設定的演變歷程。",
+                note: "「每個被隨手畫在筆記本邊緣的小怪物，都值得擁有自己的名字。」"
+            },
+            {
+                id: "12",
+                title: "生活綠茶鋁箔包形變動畫研究",
+                cat: "逐格動畫",
+                filter: "anim",
+                thumb: "images/4/005.jpg",
+                gallery: ["images/4/005.jpg"],
+                tags: "擠壓形變 / 運動規律 / 逐格分解",
+                tools: "2D 手繪動畫 / 動態影格測試",
+                desc: "針對生活泡沫綠茶 330cc 鋁箔包進行的連續擠壓受力形變研究。精準捕捉金屬包裝在遭受重壓、折損、扭曲至徹底壓扁過程中的皺褶走向與物理反饋，並製作成流暢的動態短片。",
+                note: "「為了畫好鋁箔包受力的瞬間，喝光了好多包綠茶。」"
+            }
+        ];
+
+        /* Journey Data */
+        const journey = [
+            ["高中時期", "國立後壁高中", "參與校內社團活動，曾擔任養蜂社社長，培養了活動籌辦、觀察耐心與團隊溝通能力，並積極參與圖書館志工服務。"],
+            ["大學時期", "台南應用科技大學 多媒體動畫系", "進入動畫領域，系統性接觸 2D 動畫原理、插畫創作、Blender 3D 建模、影像後製與數位視覺傳達。"],
+            ["創作累積", "多元媒材探索與跨界實踐", "課堂與課餘時間同步展開手作皮革、劇本撰寫、像素遊戲設計與動態文字排印，積極探索不同媒介的表達可能。"],
+            ["系務參與", "多媒體動畫系學會 文書組", "擔任系學會文書幹部，負責會議記錄、表單製作、名冊管理及大型活動現場支援，具備優秀的行政協調與實務執行力。"],
+            ["現在與未來", "持續深耕互動與動畫領域", "持續學習網頁互動設計與新興創作工具，致力將手作溫度與數位動態敘事結合，創造更具個人特色的代表作。"]
+        ];
+
+        /* Campus Activity Records */
+        const campus = [
+            "系學會文書組幹部（會議與名冊資料整理）",
+            "迎新與系上大型活動籌備與進退場",
+            "活動場地視覺布置與現場設備支援",
+            "社區營造泥作與工藝手作工作坊參與",
+            "線上表單系統建置與問卷數據彙整",
+            "多媒體動畫系專題展覽籌備小組",
+            "校內外競賽與創作成果展示"
+        ];
+
+        /* Next Goals */
+        const next = [
+            "完成一部完整的個人原創 2D 動畫短片",
+            "加強 Blender 3D 角色雕刻與骨架綁定動畫能力",
+            "深化 HTML5 Canvas 與 WebGL 互動網頁設計技能",
+            "將手工皮革結合金屬與複合媒材，推出系列立體小物",
+            "完善《當邏輯燃燒時，我們談論草莓蛋糕》完整視覺分鏡",
+            "探索生成式與互動科技在多媒體創作中的輔助應用"
+        ];
+
+        /* Video Clips Data */
+        const videoClips = [
+            {
+                title: "專案動畫作業展示",
+                file: "images/4/柯向恩D13370449.mp4",
+                duration: "00:10",
+                desc: "多媒體動畫專案作業片段展示（學號 D13370449 柯向恩）"
+            },
+            {
+                title: "動態影像合成練習",
+                file: "images/4/0512.mp4",
+                duration: "00:14",
+                desc: "動態影像合成與鏡頭動勢綜合演練專案"
+            },
+            {
+                title: "形變逐格動態",
+                file: "images/4/00519.mp4",
+                duration: "00:04",
+                desc: "Pr形變動作測試"
+            },
+            {
+                title: "關鍵影格動態演練 01",
+                file: "images/4/01.mp4",
+                duration: "00:07",
+                desc: "基礎動畫關鍵影格與運動律動演練"
+            },
+            {
+                title: "角色動作動態演練 02",
+                file: "images/4/wkd.mp4",
+                duration: "00:03",
+                desc: "角色動作流暢度與時間間距微調測試"
+            }
+        ];
+
+        /* Audio Tracks Data */
+        const audioTracks = [
+            {
+                title: "計畫案聲音設計：主題音景 01",
+                file: "images/4/計畫案1%20.mp3",
+                duration: "00:37",
+                type: "專案原創配樂 / 氛圍音效"
+            },
+            {
+                title: "計畫案聲音設計：情境氛圍 02",
+                file: "images/4/計畫案2.mp3",
+                duration: "01:02",
+                type: "專案背景音樂 / 環境配樂"
+            },
+            {
+                title: "多媒體聲音設計作業 A",
+                file: "images/4/d13370449%20柯向恩.mp3",
+                duration: "00:48",
+                type: "聲音剪輯 / 課堂作品"
+            },
+            {
+                title: "多媒體聲音設計作業 B",
+                file: "images/4/d13370449柯向恩.mp3",
+                duration: "00:32",
+                type: "音效合成 / 課堂作業"
+            },
+            {
+                title: "專案混音與聲音後製完成檔",
+                file: "images/4/最後%20-%202026_5_7%20下午5.09.mp3",
+                duration: "00:34",
+                type: "混音後製 / 成果展示"
+            }
+        ];
+
+        /* Mini Game Items */
+        const gameItems = [
+            { id: 1, title: "Carved Away 木偶分鏡稿", zone: "動畫" },
+            { id: 2, title: "手工尖牙皮革證件套", zone: "手作" },
+            { id: 3, title: "Teto 麵包店實習遊戲", zone: "遊戲" },
+            { id: 4, title: "當邏輯燃燒時草莓蛋糕", zone: "劇本" },
+            { id: 5, title: "生活綠茶逐格形變動畫", zone: "動畫" },
+            { id: 6, title: "夜幕石造旅棧 3D 渲染", zone: "遊戲" }
+        ];
+        let selectedSortItem = null;
+        let placedItemsCount = 0;
+
+        /* Creature Random Quotes */
+        const msgs = [
+            "你剛剛有看到一隻青綠色頭髮的阿犬嗎？",
+            "……我只是一隻沒有感情的資料庫小生物。",
+            "據說今天的草莓蛋糕依然沒有下落。",
+            "這個網站的紙質手感摸起來不錯吧？",
+            "不要再戳我了，我的多邊形要變形了。",
+            "今天也是努力（躺平）的一天。",
+            "推土機駕駛員說他真的很想把地板推平。",
+            "你戳了我，你的專注力 +10。",
+            "看開點，明天又是交作業的好日子！",
+            "我就爛！但我還是把作品全部放上來了！",
+            "阿犬說你今天看起來很有精神喔。",
+            "……剛剛是不是有一塊麵包飛過去了？"
+        ];
+
+        /* Helper Toast */
+        function toast(t) {
+            let x = document.getElementById("toast");
+            x.textContent = t;
+            x.classList.add("show");
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => x.classList.remove("show"), 2200);
+        }
+
+        /* Render All Modules */
+        function render() {
+            // Skills
+            document.getElementById("skillsGrid").innerHTML = skillData.map((s, i) => `
+    <div class="skill" onclick="this.classList.toggle('flip')">
+      <div class="skill-inner">
+        <div class="front">
+          <div>
+            <div class="eyebrow">SKILL ${String(i + 1).padStart(2, '0')}</div>
+            <h3>${s[0]}</h3>
+            <p>${s[1]}</p>
+          </div>
+          <span class="tag">點擊翻閱備註 ↻</span>
+        </div>
+        <div class="back">
+          <div>
+            <div class="eyebrow">ARCHIVE NOTE</div>
+            <h3>${s[0]}</h3>
+            <p style="white-space:pre-line;color:#4a4233">${s[2]}</p>
+          </div>
+          <span class="hand">「翻回去也可以。」</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+            // Works
+            renderWorks("all");
+
+            // Timeline
+            document.getElementById("timeline").innerHTML = journey.map(j => `
+    <div class="event">
+      <span class="dot"></span>
+      <div class="paper">
+        <div class="eyebrow">${j[0]}</div>
+        <h2>${j[1]}</h2>
+        <p>${j[2]}</p>
+      </div>
+    </div>
+  `).join("");
+
+            // Campus
+            document.getElementById("campusGrid").innerHTML = campus.map((x, i) => `
+    <div class="card">
+      <div class="num">RECORD ${String(i + 1).padStart(2, '0')}</div>
+      <h3>${x}</h3>
+      <p style="margin-top:auto"><span class="tag">實務經驗</span> <span class="tag alt">已確認記錄</span></p>
+    </div>
+  `).join("");
+
+            // Next
+            document.getElementById("nextGrid").innerHTML = next.map((x, i) => `
+    <div class="card" onclick="toast('狀態：進行中！阿犬正在努力中……')">
+      <div class="num">MILESTONE ${String(i + 1).padStart(2, '0')}</div>
+      <h3>${x}</h3>
+      <p style="color:#635c4d;margin-top:auto">【進度狀態】持續實踐中 / 未來專案目標</p>
+    </div>
+  `).join("");
+
+            // Video Clips
+            document.getElementById("videoClips").innerHTML = videoClips.map((v, i) => `
+    <button class="clip-btn ${i === 0 ? 'active' : ''}" onclick="switchVideo(${i})">
+      ▶ ${v.title}<br>
+      <small style="opacity:.8">${v.duration} | 片段 ${i + 1}</small>
+    </button>
+  `).join("");
+
+            // Audio Tracks
+            document.getElementById("audioTracks").innerHTML = audioTracks.map((a, i) => `
+    <div class="track-item ${i === 0 ? 'playing' : ''}" onclick="switchAudio(${i})" id="track-${i}">
+      <div>
+        <b>${a.title}</b><br>
+        <small style="color:#6e6552">${a.type}</small>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-family:monospace;font-size:.8rem">${a.duration}</span>
+        <button class="track-btn">PLAY</button>
+      </div>
+    </div>
+  `).join("");
+
+            // Game Items
+            renderGame();
+        }
+
+        /* Works Filtering */
+        function filterWorks(cat) {
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === cat));
+            renderWorks(cat);
+        }
+
+        function renderWorks(cat) {
+            const filtered = cat === "all" ? works : works.filter(w => w.filter === cat);
+            document.getElementById("worksGrid").innerHTML = filtered.map(w => {
+                const coverHtml = w.pdf ? `
+      <div class="work-pdf-cover" onclick="openWork('${w.id}')">
+        <div class="pdf-icon">📄</div>
+        <div class="pdf-tag">ORIGINAL SCRIPT / PDF</div>
+        <div class="pdf-title">${w.title}</div>
+        <div class="pdf-action">點擊調閱劇本檔案 ↗</div>
+        <span class="work-badge">${w.cat} · PDF</span>
+      </div>
+    ` : `
+      <div class="work-thumb-wrap" onclick="openWork('${w.id}')">
+        <img src="${w.thumb}" alt="${w.title}" class="work-thumb" loading="lazy">
+        <span class="work-badge">${w.cat}</span>
+      </div>
+    `;
+
+                return `
+    <div class="work-card">
+      ${coverHtml}
+      <div class="work-info">
+        <div class="num">FILE ${w.id}</div>
+        <h3 style="margin-bottom:6px">${w.title}</h3>
+        <p style="font-size:.88rem;color:#554e40;margin-bottom:12px">${w.desc.slice(0, 55)}...</p>
+        <div class="work-meta">
+          <span class="tag alt">${w.cat}${w.pdf ? ' (PDF)' : ''}</span>
+          <button class="btn sm" onclick="openWork('${w.id}')">VIEW FILE</button>
+        </div>
+      </div>
+    </div>
+  `;
+            }).join("");
+        }
+
+        /* Work Details Modal */
+        function openWork(id) {
+            const w = works.find(x => x.id === id);
+            if (!w) return;
+            document.getElementById("modalCategory").textContent = `DOSSIER FILE NO. ${w.id} / ${w.cat}`;
+            document.getElementById("modalTitle").textContent = w.title;
+
+            let mediaHtml = "";
+            if (w.pdf) {
+                const encodedPdf = encodeURI(w.pdf);
+                mediaHtml = `
+    <div style="margin:16px 0;background:#202824;padding:16px;border:1px solid var(--line);border-radius:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+        <div style="color:var(--c);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px">
+          <span style="font-size:1.4rem">📄</span> 原創劇本完整手稿 PDF
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="${encodedPdf}" target="_blank" class="btn sm" style="text-decoration:none">
+            📖 在新分頁全螢幕閱讀 ↗
+          </a>
+          <a href="${encodedPdf}" download class="btn alt sm" style="text-decoration:none">
+            📥 下載劇本 PDF
+          </a>
+        </div>
+      </div>
+      <div style="position:relative;width:100%;height:540px;background:#525659;border:1px solid #3c4c44;border-radius:3px;overflow:hidden">
+        <iframe src="${encodedPdf}#toolbar=1" width="100%" height="100%" style="border:0" title="${w.title}">
+          <p style="padding:20px;color:#fff">您的瀏覽器不支援直接預覽 PDF。<a href="${encodedPdf}" target="_blank" style="color:var(--o)">點擊此處在新分頁閱讀 PDF 劇本</a></p>
+        </iframe>
+      </div>
+      <div style="text-align:right;color:#aaa;font-size:.75rem;font-family:monospace;margin-top:8px">
+        ※ 若瀏覽器預設阻止內嵌預覽，可點擊上方按鈕直接在新分頁全螢幕閱讀
+      </div>
+    </div>
+  `;
+            } else if (w.gallery && w.gallery.length > 0) {
+                mediaHtml = w.gallery.map(img => `
+    <div style="margin:12px 0;background:#202824;padding:8px;border:1px solid var(--line);cursor:pointer" onclick="openLightbox('${img}','${w.title}')">
+      <img src="${img}" alt="${w.title}" style="max-height:460px;width:100%;object-fit:contain;margin:auto">
+      <div style="text-align:center;color:#eee;font-size:.75rem;font-family:monospace;margin-top:6px">點擊放大檢視高清原圖</div>
+    </div>
+  `).join("");
+            }
+
+            const noteContent = w.note ? w.note.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--g);text-decoration:underline;font-weight:700">$1 ↗</a>') : '';
+
+            document.getElementById("modalBody").innerHTML = `
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      ${w.tags.split('/').map(t => `<span class="tag">${t.trim()}</span>`).join("")}
+    </div>
+    ${mediaHtml}
+    <div class="table" style="margin:16px 0">
+      <div class="label">作品名稱</div><div>${w.title}</div>
+      <div class="label">分類類別</div><div>${w.cat}</div>
+      <div class="label">使用工具/媒材</div><div>${w.tools}</div>
+      <div class="label">內容簡述</div><div>${w.desc}</div>
+    </div>
+    <div class="note">${noteContent}</div>
+  `;
+            document.getElementById("modal").classList.add("show");
+        }
+
+        /* Video Switching */
+        function switchVideo(idx) {
+            const v = videoClips[idx];
+            if (!v) return;
+            const vid = document.getElementById("mainVideo");
+            vid.src = v.file;
+            vid.play().catch(() => { });
+            document.getElementById("videoTitle").textContent = `▶ ${v.title}`;
+            document.getElementById("videoMeta").textContent = `長度：${v.duration} | ${v.desc}`;
+            document.querySelectorAll(".clip-btn").forEach((b, i) => b.classList.toggle("active", i === idx));
+            toast(`切換播放：${v.title}`);
+        }
+
+        /* Audio Switching */
+        function switchAudio(idx) {
+            const a = audioTracks[idx];
+            if (!a) return;
+            const aud = document.getElementById("mainAudio");
+            aud.src = a.file;
+            aud.play().catch(() => { });
+            document.getElementById("audioNowPlaying").textContent = `目前播放：${a.title} (${a.duration})`;
+            document.querySelectorAll(".track-item").forEach((b, i) => b.classList.toggle("playing", i === idx));
+            toast(`播放音軌：${a.title}`);
+        }
+
+        /* Lightbox Modal */
+        function openLightbox(src, caption) {
+            const lb = document.getElementById("lightbox");
+            const img = document.getElementById("lightboxImg");
+            img.src = src;
+            img.alt = caption || "放大預覽";
+            lb.classList.add("show");
+        }
+        function closeLightbox(e) {
+            if (!e || e.target.id === "lightbox" || e.target.className === "lightbox-close") {
+                document.getElementById("lightbox").classList.remove("show");
+            }
+        }
+
+        /* Meme Interaction */
+        function triggerMeme(title, msg) {
+            toast(`【${title}】${msg}`);
+        }
+
+        /* Mini Game Logic */
+        function renderGame() {
+            const container = document.getElementById("sortItems");
+            container.innerHTML = gameItems.map(item => `
+    <div class="sort-item ${item.placed ? 'placed' : ''}" id="item-${item.id}" onclick="selectSortItem(${item.id})">
+      <span>${item.title}</span>
+      <span class="num">${item.placed ? '✓ 已歸檔' : '選取'}</span>
+    </div>
+  `).join("");
+        }
+
+        function selectSortItem(id) {
+            const item = gameItems.find(x => x.id === id);
+            if (!item || item.placed) return;
+            selectedSortItem = item;
+            document.querySelectorAll(".sort-item").forEach(el => el.style.borderColor = "var(--line)");
+            const target = document.getElementById(`item-${id}`);
+            if (target) target.style.borderColor = "var(--r)";
+            toast(`已選取「${item.title}」，請點擊下方對應的檔案盒！`);
+        }
+
+        function handleZoneClick(zoneName) {
+            if (!selectedSortItem) {
+                toast("請先點擊上方的一個待分類檔案！");
+                return;
+            }
+            if (selectedSortItem.zone === zoneName) {
+                selectedSortItem.placed = true;
+                placedItemsCount++;
+                const zoneBox = document.querySelector(`.zone[data-zone="${zoneName}"] .zone-content`);
+                const div = document.createElement("div");
+                div.className = "sort-item placed";
+                div.style.marginTop = "4px";
+                div.textContent = `✓ ${selectedSortItem.title}`;
+                zoneBox.appendChild(div);
+                toast(`歸檔成功！「${selectedSortItem.title}」已收進【${zoneName}】`);
+                selectedSortItem = null;
+                renderGame();
+                if (placedItemsCount === gameItems.length) {
+                    document.getElementById("gameMsg").innerHTML = `🎉 恭喜！所有檔案已全數歸檔完畢！阿犬向您致敬！<span class="stamp">特級整理員證書</span>`;
+                    toast("檔案整理大成功！解鎖特級整理員！");
+                }
+            } else {
+                toast(`分類錯誤！這份檔案好像不屬於【${zoneName}】，再試一次吧！`);
+            }
+        }
+
+        /* Page Routing */
+        function route() {
+            let id = location.hash.replace("#", "") || "home";
+            if (!document.getElementById(id)) id = "home";
+            document.querySelectorAll(".page").forEach(p => p.classList.toggle("active", p.id === id));
+            document.querySelectorAll(".links a").forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (id === "secret") {
+                document.getElementById("count").textContent = Math.min(+(localStorage.getItem("creatureCount") || 0), 5);
+            }
+        }
+
+        /* Initialization */
+        document.addEventListener("DOMContentLoaded", () => {
+            render();
+            route();
+            window.addEventListener("hashchange", route);
+
+            setTimeout(() => document.getElementById("loading").classList.add("hide"), 1200);
+
+            // Close modals
+            document.getElementById("close").onclick = () => document.getElementById("modal").classList.remove("show");
+            document.getElementById("modal").addEventListener("click", e => {
+                if (e.target.id === "modal") e.target.classList.remove("show");
+            });
+
+            // Top Archive status toggle
+            document.getElementById("status").onclick = () => {
+                const s = ["ARCHIVE STATUS: OPEN", "ARCHIVE STATUS: CREATING...", "ARCHIVE STATUS: ALL FILES SECURED", "ARCHIVE STATUS: CONFUSED BUT HAPPY"];
+                let i = +(localStorage.getItem("status") || 0);
+                i = (i + 1) % s.length;
+                localStorage.setItem("status", i);
+                document.getElementById("status").textContent = s[i];
+                toast(s[i]);
+            };
+
+            // Fun buttons
+            document.getElementById("fileNo").onclick = () => {
+                let i = +(localStorage.getItem("fileClicks") || 0) + 1;
+                localStorage.setItem("fileClicks", i);
+                toast(["你點了檔案編號。", "還是想點？", "這只是個編號啦。", "好吧，頒發一顆星星 ★", "阿犬覺得你很細心。"][Math.min(i - 1, 4)]);
+            };
+            document.getElementById("dont").onclick = () => toast("都說了不要拍打，你果然按了。");
+
+            // Creature interaction
+            document.getElementById("creature").onclick = () => {
+                let b = document.getElementById("bubble");
+                b.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                b.classList.add("show");
+                setTimeout(() => b.classList.remove("show"), 2800);
+                let n = +(localStorage.getItem("creatureCount") || 0) + 1;
+                localStorage.setItem("creatureCount", n);
+                if (document.getElementById("count")) {
+                    document.getElementById("count").textContent = Math.min(n, 5);
+                }
+                if (n === 5) {
+                    toast("🏆 隱藏成就解鎖：你已經成功戳了小怪獸 5 次！小生物認可你了！");
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
